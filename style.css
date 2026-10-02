@@ -15,3 +15,7 @@
 }
 
 :root .caption{background:#ffffffdf;padding:12px 16px;border-left:3px solid #143282;border-radius:2px}.caption h2{margin-bottom:0}
+
+/* Keep the full project title readable across desktop and phone layouts. */
+header>div{min-width:0;flex:1}header h1{font-size:clamp(14px,1.6vw,22px);line-height:1.2}header>span{flex:none}
+@media(max-width:560px){header{height:92px}header h1{font-size:14px}header p{line-height:1.2}#viewport{top:92px}}
