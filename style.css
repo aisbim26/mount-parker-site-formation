@@ -19,3 +19,7 @@
 /* Keep the full project title readable across desktop and phone layouts. */
 header>div{min-width:0;flex:1}header h1{font-size:clamp(14px,1.6vw,22px);line-height:1.2}header>span{flex:none}
 @media(max-width:560px){header{height:92px}header h1{font-size:14px}header p{line-height:1.2}#viewport{top:92px}}
+
+aside h2{font-size:34px;line-height:1.1}.title-and{display:block;font-size:24px;margin:6px 0}button[aria-pressed=true]{background:#e6edfa;border-color:#3159b8}.auto-hide{font-size:12px;color:#62728b}@media(max-width:560px){aside{height:240px;grid-template-rows:56px 1fr}#viewport{bottom:272px}.buttons button{font-size:11px;line-height:1.2;min-height:48px}.buttons{gap:4px}aside section:first-of-type{gap:6px}.auto-hide{font-size:11px}}
+
+@media(min-width:561px){aside{padding:16px 22px}aside h2{font-size:29px;margin:12px 0}.title-and{display:inline;font-size:24px;margin:0}section{margin-top:16px;padding-top:12px}label{padding:6px 0}.intro{margin:10px 0}.eyebrow{margin:8px 0}.buttons button{font-size:12px;padding:8px}.auto-hide{font-size:11px}}
