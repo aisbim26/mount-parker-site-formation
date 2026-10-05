@@ -18,10 +18,10 @@ function preset(kind){
   controls.target.set(0,95,0);const aspect=host.clientWidth/host.clientHeight,angle=Math.min(42*Math.PI/180,2*Math.atan(Math.tan(21*Math.PI/180)*aspect)),distance=420/Math.sin(angle/2)*1.05;
   camera.position.copy(new THREE.Vector3(.55,.62,.72).normalize().multiplyScalar(distance).add(controls.target));showBuildings(true);
  }else{
-  const target=kind==='kings'?new THREE.Vector3(-28,24,-68):new THREE.Vector3(-25,34,-8);
-  const offset=kind==='kings'?new THREE.Vector3(72,35,-52):new THREE.Vector3(160,115,22);
+  const target=kind==='kings'?new THREE.Vector3(-28,15,-68):new THREE.Vector3(-12,20,16);
+  const offset=kind==='kings'?new THREE.Vector3(57,27,-41):new THREE.Vector3(95,68,-8);
   const aspect=host.clientWidth/host.clientHeight;offset.multiplyScalar(Math.max(1,1.15/aspect));
-  controls.target.copy(target);camera.position.copy(target).add(offset);showBuildings(false);
+  controls.target.copy(target);camera.position.copy(target).add(offset);visibilityDirty=true;
  }
  controls.update();visibilityDirty=true;
  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===kind)));
@@ -62,8 +62,8 @@ function updateBuildingVisibility(){
  host.dataset.hiddenBuildings=String(hidden.size);
 }
 preset('mount');
-const tasks=['project','terrain','buildings','context'].map(async name=>{const gltf=await loader.loadAsync('./'+name+'.glb?v=20261005e');if(name==='project')applyProjectMaterials(gltf.scene);layers[name]=gltf.scene;scene.add(gltf.scene);gltf.scene.visible=document.querySelector(`[data-layer="${name}"]`).checked;status.textContent=`Loading model… ${++loaded}/5 layers`;});
-tasks.push(fetch('./trees.json?v=20261005e').then(r=>{if(!r.ok)throw Error('Tree data unavailable');return r.json()}).then(data=>{layers.trees=createTrees(data);scene.add(layers.trees);layers.trees.visible=document.querySelector('[data-layer="trees"]').checked;loaded++;}));
+const tasks=['project','terrain','buildings','context'].map(async name=>{const gltf=await loader.loadAsync('./'+name+'.glb?v=20261005f');if(name==='project')applyProjectMaterials(gltf.scene);layers[name]=gltf.scene;scene.add(gltf.scene);gltf.scene.visible=document.querySelector(`[data-layer="${name}"]`).checked;status.textContent=`Loading model… ${++loaded}/5 layers`;});
+tasks.push(fetch('./trees.json?v=20261005f').then(r=>{if(!r.ok)throw Error('Tree data unavailable');return r.json()}).then(data=>{layers.trees=createTrees(data);scene.add(layers.trees);layers.trees.visible=document.querySelector('[data-layer="trees"]').checked;loaded++;}));
 Promise.all(tasks).then(()=>{prepareVisibility();status.textContent='Model ready · Terrain alignment for review';host.dataset.ready='true';}).catch(e=>{status.textContent='Unable to load model: '+e.message;host.dataset.ready='error';console.error(e)});
 new ResizeObserver(()=>{const {width,height}=host.getBoundingClientRect();renderer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();}).observe(host);
 let frames=0;renderer.setAnimationLoop(()=>{controls.update();if(visibilityDirty&&performance.now()-lastVisibility>180){updateBuildingVisibility();visibilityDirty=false;lastVisibility=performance.now();}renderer.render(scene,camera);if(++frames%90===0)document.querySelector('#diagnostics').textContent=`${renderer.info.render.calls} draws · ${Math.round(renderer.info.render.triangles/1000)}k triangles`;document.querySelector('#north').style.transform=`rotate(${controls.getAzimuthalAngle()}rad)`;});
